@@ -1,0 +1,57 @@
+import pyaudio
+import wave
+
+class RecordAudio:
+    def record(self, rate, channels, width, recordSeconds, fileName):
+        # Initialize PyAudio
+        pyaud = pyaudio.PyAudio()
+        
+        # Record settings
+        stream = pyaud.open(
+            rate=rate,
+            format=pyaud.get_format_from_width(width),
+            channels=channels,
+            input=True
+        )
+        
+        print("Recording audio...")
+        
+        frames = []
+        for i in range(0, int(rate / chunk * recordSeconds)):
+            data = stream.read(chunk)
+            frames.append(data)
+        
+        print("Done recording, now saving file...")
+        
+        stream.stop_stream()
+        stream.close()
+        pyaud.terminate()
+
+        wf = wave.open(fileName, 'wb')
+        wf.setnchannels(channels)
+        wf.setsampwidth(pyaud.get_sample_size(pyaud.get_format_from_width(width)))
+        wf.setframerate(rate)
+        wf.writeframes(b''.join(frames))
+        wf.close()
+
+        print("Done recording and file being saved.")
+
+# Print start of test
+print("Audio Recording Test")
+
+# Test of audio recording
+recordAudio = RecordAudio()
+
+# Audio Settings
+RATE = 16000
+CHANNELS = 1
+WIDTH = 2
+CHUNK = 1024
+RECORD_SECONDS = 5
+WAVE_OUTPUT_FILENAME = "recorded_audio.wav"
+
+# Run record audio
+recordAudio.record(RATE, CHANNELS, WIDTH, RECORD_SECONDS, WAVE_OUTPUT_FILENAME)
+
+print("Recording completed!")
+
