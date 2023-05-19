@@ -55,11 +55,15 @@ RATE = 16000
 CHANNELS = 1  # Mono
 WIDTH = 2  # 2 bytes per sample
 RECORD_SECONDS = 3
-WAVE_OUTPUT_FILENAME = "recorded_audio.wav"
 
-# Record audio for 3 seconds
-recordAudio.record(RATE, CHANNELS, WIDTH, RECORD_SECONDS, WAVE_OUTPUT_FILENAME)
+# Repeat the recording and playing 20 times
+for i in range(1, 21):
+    print(f"Recording and playing #{i}")
+    WAVE_OUTPUT_FILENAME = f"recorded_audio_{i}.wav"
 
-# Play the recorded audio through output on card 2
-recordAudio.playAudio(WAVE_OUTPUT_FILENAME)
+    # Record audio for 3 seconds
+    recordAudio.record(RATE, CHANNELS, WIDTH, RECORD_SECONDS, WAVE_OUTPUT_FILENAME)
+
+    # Play the recorded audio through output on card 2
+    recordAudio.playAudio(WAVE_OUTPUT_FILENAME)
 
