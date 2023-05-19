@@ -1,5 +1,6 @@
 import pyaudio
 import wave
+import subprocess
 
 class RecordAudio:
     def record(self, rate, channels, width, recordSeconds, fileName):
@@ -41,6 +42,10 @@ class RecordAudio:
         wf.close()
 
         print("Done recording and file saved.")
+    
+    def playAudio(self, fileName):
+        # Play audio using aplay
+        subprocess.run(["aplay", "-D", "plughw:2", fileName])
 
 # Create an instance of the RecordAudio class
 recordAudio = RecordAudio()
@@ -54,4 +59,7 @@ WAVE_OUTPUT_FILENAME = "recorded_audio.wav"
 
 # Record audio for 3 seconds
 recordAudio.record(RATE, CHANNELS, WIDTH, RECORD_SECONDS, WAVE_OUTPUT_FILENAME)
+
+# Play the recorded audio through output on card 2
+recordAudio.playAudio(WAVE_OUTPUT_FILENAME)
 
